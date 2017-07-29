@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableHighlight} from 'react-native';
-import TodoModel from './TodoModel';
+import DeckModel from './DeckModel';
 import OmniBox from './OmniBox';
 import SortableListView from 'react-native-sortable-listview';
 import ListViewItem from './ListViewItem';
 import Utils from './Utils';
+import ChimeeraApiUtil from './ChimeeraApiUtil';
 
 let dataList = [
-  new TodoModel('Lauren is a Butt'),
-  new TodoModel('Lauren drinks Kombucha'),
-  new TodoModel('Lauren does not like chemicals'),
-  new TodoModel('Lauren reads Reddit'),
-  new TodoModel('Lauren eats poop'),
-  new TodoModel('Lauren does not notice this'),
-  new TodoModel('Lauren does not notice this also')
+  new DeckModel('Lauren is a Butt'),
+  new DeckModel('Lauren drinks Kombucha'),
+  new DeckModel('Lauren does not like chemicals'),
+  new DeckModel('Lauren reads Reddit'),
+  new DeckModel('Lauren eats poop'),
+  new DeckModel('Lauren does not notice this'),
+  new DeckModel('Lauren does not notice this also')
 ];
 
 var dataListOrder = getOrder(dataList);

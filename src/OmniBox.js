@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { TextInput } from 'react-native';
-import TodoModel from './TodoModel';
+import DeckModel from './DeckModel';
 import Utils from './Utils';
+import ChimeeraApiUtil from './ChimeeraApiUtil';
 
+//TODO Temporarily this will go here until you figure out separate concerns
+// and have th API calls exist in its own file OR make this the search
+// component instead of Omnibox
 class OmniBox extends Component {
   constructor(props) {
     super(props);
@@ -26,9 +30,29 @@ class OmniBox extends Component {
     this.props.updateDataList(dataList);
   }
 
-  onKeyPress(event){
-    if (event.nativeEvent.key == 'Enter' && this.state.newValue) {
-      var newDataItem = new TodoModel(this.state.newValue);
+  //TODO Temporarily this will go here until you figure out separate concerns
+  // and have th API calls exist in its own file OR make this the search
+  // component instead of Omnibox
+  getSearchFromApiAsync(term) {
+    fetch('https://chimeera.herokuapp.com/chimeerapi/' + term, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //TODO FOr each of the results you need to create a card/list entry,
+      // then later it will be sub listingsthat are accessed via a click to get
+      // to a list the same as now but THis top layer will be a list of decks
+      // and the lower level is Cards
+      // console.log("Result from search API async: ", responseJson);
+      // console.log("Result from search API async: ", JSON.parse(responseJson));
+      var result = JSON.parse(responseJson);
+      var newDataItem = new DeckModel(term, result.data);
+      console.log("The Deck Model looks like: ", newDataItem);
+      // console.log("THE PROPS: ", this.props);
 
       var dataList = this.props.data;
       var dataItem = Utils.findTodo(newDataItem, dataList);
@@ -48,6 +72,45 @@ class OmniBox extends Component {
         newValue: ''
       });
       this.props.updateDataList(dataList);
+
+      // return responseJson;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+
+  onKeyPress(event){
+    if (event.nativeEvent.key == 'Enter' && this.state.newValue) {
+      var term = this.state.newValue;
+      console.log("Search Term: ", term);
+      // var dataList = this.props.data;
+      // ChimeeraApiUtil.getSearchFromApiAsync(term);
+      this.getSearchFromApiAsync(term);
+
+      // var newDataItem = new DeckModel(term, 'Bunch of information');
+      // console.log("The Card Model looks like: ", newDataItem);
+      // console.log("THE PROPS: ", this.props);
+      //
+      // var dataList = this.props.data;
+      // var dataItem = Utils.findTodo(newDataItem, dataList);
+      // if(dataItem) {
+      //   Utils.move(dataList, (dataList.indexOf(dataItem)), 0);
+      //
+      //   this.setState({
+      //     newValue: ''
+      //   });
+      //   this.props.updateDataList(dataList);
+      //   return;
+      // }
+      //
+      // dataList.unshift(newDataItem);
+      //
+      // this.setState({
+      //   newValue: ''
+      // });
+      // this.props.updateDataList(dataList);
     }
   }
 
