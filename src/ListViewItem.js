@@ -18,6 +18,7 @@ class ListViewItem extends Component {
   }
 
   _onCheckBoxPressed() {
+    console.log("Checkbox pressed so move to the list view of this deck.");
     var data = this.state.data;
     data.completed = !data.completed;
     this.setState({

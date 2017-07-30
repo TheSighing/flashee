@@ -1,6 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ListView from './src/ListView';
+import HomeScreen from './src/HomeScreen';
+import DeckListScreen from './src/DeckListScreen';
+import { StackNavigator } from 'react-navigation';
+
+const NavStack = StackNavigator({
+  Home: { screen: HomeScreen },
+  DeckList: { screen: DeckListScreen },
+});
 
 export default class App extends React.Component {
   // render() {
@@ -16,9 +24,13 @@ export default class App extends React.Component {
   // }
   render() {
    return (
-     <View style={styles.container}>
-       <ListView></ListView>
-     </View>
+    //  <View style={styles.container}>
+    //    <ListView></ListView>
+    //  </View>
+      // StackNavigator({
+      //   Home: { screen: HomeScreen },
+      // });
+      <NavStack/>
    );
   }
 }
